@@ -9,39 +9,156 @@
 			margin: 0;
 			height: 100%;
 		}
+		.map-toolbar {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding-top: 0.5em;
+			padding-right: 0.5em;
+		}
 	</style>
 </head>
 <body>
 	<div id="mapDiv"></div>
 	<script data-dojo-config="{async: true}"></script>
-	<script src="//serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/"></script>
+	<script src="//serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
 	<script>
-		require(["dojo/on", "esri/map", "dojo/domReady!"], function (on, Map) {
+		/*global require*/
+		/*jslint browser:true*/
+		require(["require", "dojo/on", "esri/map", "esri/graphic", "esri/geometry/Extent", "esri/toolbars/draw", "dojo/_base/connect", "dojo/domReady!"
+		], function (require, on, Map, Graphic, Extent, Draw, connect) {
 			"use strict";
-			var map, xminElement, yminElement, xmaxElement, ymaxElement, parentDoc;
-			map = new Map("mapDiv", {
-				basemap: "streets"
-			});
+			var map, gfxLayer;
 
-			on(map, "extent-change", function (data) {
-				var extent = data.extent;
-				parentDoc = parent.opener.document
+			/** Gets the extent from the parent page.
+			@returns {Object}
+			*/
+			function getExtent() {
+				var extent, xminElement, yminElement, xmaxElement, ymaxElement, parentDoc, xmin, ymin, xmax, ymax;
+				parentDoc = parent.opener.document;
 				xminElement = parentDoc.getElementById("xmin");
 				yminElement = parentDoc.getElementById("ymin");
 				xmaxElement = parentDoc.getElementById("xmax");
 				ymaxElement = parentDoc.getElementById("ymax");
 				if (xminElement && yminElement && xmaxElement && ymaxElement) {
-					xminElement.value = extent.xmin;
-					yminElement.value = extent.ymin;
-					xmaxElement.value = extent.xmax;
-					ymaxElement.value = extent.ymax;
-				} else {
-					console.error("Extent elements not found");
-					console.debug(xminElement, yminElement, xmaxElement, ymaxElement);
+					xmin = xminElement.valueAsNumber;
+					ymin = yminElement.valueAsNumber;
+					xmax = xmaxElement.valueAsNumber;
+					ymax = ymaxElement.valueAsNumber;
+					if (xmin && ymin && xmax && ymax) {
+						extent = new Extent({
+							xmin: xmin,
+							ymin: ymin,
+							xmax: xmax,
+							ymax: ymax,
+							spatialReference: 3857
+						});
+					}
 				}
+				return extent;
+			}
+
+			/** Sets the extent input boxes in the parent page.
+			*/
+			function setParentExtent(/*Extent*/ extent) {
+				var xminElement, yminElement, xmaxElement, ymaxElement, parentDoc;
+				parentDoc = parent.opener.document;
+				xminElement = parentDoc.getElementById("xmin");
+				yminElement = parentDoc.getElementById("ymin");
+				xmaxElement = parentDoc.getElementById("xmax");
+				ymaxElement = parentDoc.getElementById("ymax");
+
+				if (xminElement && yminElement && xmaxElement && ymaxElement) {
+					xminElement.value = extent ? extent.xmin : null;
+					yminElement.value = extent ? extent.ymin : null;
+					xmaxElement.value = extent ? extent.xmax : null;
+					ymaxElement.value = extent ? extent.ymax : null;
+				}
+			}
+
+			function createToolbarControls(mapRoot) {
+				var docFrag, draw, toolbar, drawButton, clearButton;
+
+				draw = new Draw(map);
+				connect.connect(draw, "onDrawComplete", function (event) {
+					if (event.geometry) {
+						gfxLayer.clear();
+						gfxLayer.add(new Graphic(event.geometry));
+						setParentExtent(event.geometry);
+
+					}
+					draw.deactivate();
+					drawButton.textContent = "Draw";
+				});
+
+				docFrag = document.createDocumentFragment();
+				toolbar = document.createElement("div");
+				toolbar.classList.add("map-toolbar");
+				docFrag.appendChild(toolbar);
+
+				drawButton = document.createElement("button");
+				drawButton.type = "button";
+				drawButton.textContent = "Draw";
+				drawButton.id = "drawButton";
+				toolbar.appendChild(drawButton);
+
+				clearButton = document.createElement("button");
+				clearButton.type = "button";
+				clearButton.textContent = "Clear";
+				clearButton.id = "clearButton";
+				toolbar.appendChild(clearButton);
+
+				mapRoot.appendChild(toolbar);
+
+				drawButton.onclick = function () {
+					if (this.textContent === "Draw") {
+						draw.activate(Draw.EXTENT, null);
+						this.textContent = "Cancel";
+					} else {
+						draw.deactivate();
+						this.textContent = "Draw";
+					}
+				};
+
+				clearButton.onclick = function () {
+					gfxLayer.clear();
+					setParentExtent(null);
+				};
+			}
+
+
+
+			map = new Map("mapDiv", {
+				basemap: "streets",
+				extent: getExtent()
 			});
+			
 
+			
 
+			on(map, "load", function () {
+				require(["esri/layers/GraphicsLayer", "esri/renderers/SimpleRenderer", "esri/symbols/SimpleFillSymbol",
+					"esri/symbols/SimpleLineSymbol", "dojo/_base/Color"
+				], function (GraphicsLayer, SimpleRenderer, SimpleFillSymbol, SimpleLineSymbol, Color) {
+					var renderer, symbol, parentExtent;
+
+					createToolbarControls(map.root);
+
+					symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+						new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT,
+						new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25])
+					  );
+
+					gfxLayer = new GraphicsLayer({ id: "graphics" });
+					renderer = new SimpleRenderer(symbol);
+					gfxLayer.setRenderer(renderer);
+					map.addLayer(gfxLayer);
+					parentExtent = getExtent();
+					if (parentExtent) {
+						gfxLayer.add(new Graphic(parentExtent));
+					}
+				});
+			});
 		});
 	</script>
 </body>
