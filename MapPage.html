@@ -156,6 +156,7 @@
 					parentExtent = getExtent();
 					if (parentExtent) {
 						gfxLayer.add(new Graphic(parentExtent));
+						map.setExtent(parentExtent, true);
 					}
 				});
 			});

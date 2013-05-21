@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+	<title></title>
 </head>
 <body>
 	<div>
@@ -18,7 +18,7 @@
 			mapButton = document.getElementById("showMapButton");
 			mapButton.onclick = function () {
 				var mapWindow;
-				mapWindow = window.open("MapPage.html", "map");
+				mapWindow = window.open("MapPage.html", "map", "titlebar=no");
 				mapWindow.closed = function () {
 					console.log(this, arguments);
 				}
