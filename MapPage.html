@@ -41,10 +41,10 @@
 				xmaxElement = parentDoc.getElementById("xmax");
 				ymaxElement = parentDoc.getElementById("ymax");
 				if (xminElement && yminElement && xmaxElement && ymaxElement) {
-					xmin = xminElement.valueAsNumber;
-					ymin = yminElement.valueAsNumber;
-					xmax = xmaxElement.valueAsNumber;
-					ymax = ymaxElement.valueAsNumber;
+					xmin = Number(xminElement.value);
+					ymin = Number(yminElement.value);
+					xmax = Number(xmaxElement.value);
+					ymax = Number(ymaxElement.value);
 					if (xmin && ymin && xmax && ymax) {
 						extent = new Extent({
 							xmin: xmin,
