@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+	<div>
+		<input id="xmin" type="number" />
+		<input id="ymin" type="number" />
+		<input id="xmax" type="number" />
+		<input id="ymax" type="number" />
+	</div>
+	<button type="button" id="showMapButton">Show Map</button>
+	<script>
+		(function () {
+			"use strict";
+			var mapButton;
+			mapButton = document.getElementById("showMapButton");
+			mapButton.onclick = function () {
+				var mapWindow;
+				mapWindow = window.open("MapPage.html", "map");
+				mapWindow.closed = function () {
+					console.log(this, arguments);
+				}
+			}
+		}());
+	</script>
+</body>
+</html>

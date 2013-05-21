@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Map</title>
+	<link rel="stylesheet" href="//serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css">
+	<style>
+		html, body, #mapDiv {
+			padding: 0;
+			margin: 0;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="mapDiv"></div>
+	<script data-dojo-config="{async: true}"></script>
+	<script src="//serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/"></script>
+	<script>
+		require(["dojo/on", "esri/map", "dojo/domReady!"], function (on, Map) {
+			"use strict";
+			var map, xminElement, yminElement, xmaxElement, ymaxElement, parentDoc;
+			map = new Map("mapDiv", {
+				basemap: "streets"
+			});
+
+			on(map, "extent-change", function (data) {
+				var extent = data.extent;
+				parentDoc = parent.opener.document
+				xminElement = parentDoc.getElementById("xmin");
+				yminElement = parentDoc.getElementById("ymin");
+				xmaxElement = parentDoc.getElementById("xmax");
+				ymaxElement = parentDoc.getElementById("ymax");
+				if (xminElement && yminElement && xmaxElement && ymaxElement) {
+					xminElement.value = extent.xmin;
+					yminElement.value = extent.ymin;
+					xmaxElement.value = extent.xmax;
+					ymaxElement.value = extent.ymax;
+				} else {
+					console.error("Extent elements not found");
+					console.debug(xminElement, yminElement, xmaxElement, ymaxElement);
+				}
+			});
+
+
+		});
+	</script>
+</body>
+</html>
