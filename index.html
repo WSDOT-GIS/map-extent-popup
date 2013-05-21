@@ -5,12 +5,12 @@
 </head>
 <body>
 	<div>
-		<input id="xmin" type="number" />
-		<input id="ymin" type="number" />
-		<input id="xmax" type="number" />
-		<input id="ymax" type="number" />
+		<label for="xmin">xmin</label><input id="xmin" type="number" />
+		<label for="ymin">ymin</label><input id="ymin" type="number" />
+		<label for="xmax">xmax</label><input id="xmax" type="number" />
+		<label for="ymax">xmax</label><input id="ymax" type="number" />
 	</div>
-	<button type="button" id="showMapButton">Show Map</button>
+	<button type="button" id="showMapButton">Edit in map</button>
 	<script>
 		(function () {
 			"use strict";
@@ -18,7 +18,11 @@
 			mapButton = document.getElementById("showMapButton");
 			mapButton.onclick = function () {
 				var mapWindow;
-				mapWindow = window.open("MapPage.html", "map", "titlebar=no");
+				mapWindow = window.open("MapPage.html", "map", "titlebar=no,menubar=no,toolbar=no,location=no,dependent=yes,modal=yes,close=no,dialog=yes");
+				mapWindow.onbeforeunload = function () {
+					console.log(this);
+					console.log(arguments);
+				}
 			}
 		}());
 	</script>

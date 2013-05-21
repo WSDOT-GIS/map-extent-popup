@@ -41,6 +41,7 @@
     <Content Include="index.html" />
     <Content Include="LICENSE.txt" />
     <Content Include="MapPage.html" />
+    <Content Include="Scripts\wsdot\extentSelector.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.md" />

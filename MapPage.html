@@ -16,13 +16,43 @@
 			padding-top: 0.5em;
 			padding-right: 0.5em;
 		}
+		.map-toolbar button, #closeButton {
+			font-size: 1em;
+			font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'DejaVu Sans Condensed', sans-serif;
+			padding: 1em;
+		}
+
+		#closeButton {
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			margin-bottom: 0.5em;
+		}
 	</style>
 </head>
 <body>
 	<div id="mapDiv"></div>
-	<script data-dojo-config="{async: true}"></script>
+	<script>
+		var dojoConfig = {
+			async: true,
+			packages: [
+				{
+					name: "wsdot",
+					location: "/Scripts/wsdot"
+				}
+			]
+		};
+	</script>
 	<script src="//serverapi.arcgisonline.com/jsapi/arcgis/3.5/"></script>
 	<script>
+		require(["dojo/on", "wsdot/extentSelector"], function (on, ExtentSelector) {
+			var extentSelector = new ExtentSelector();
+			on(extentSelector, "extent-change", function () {
+				console.log(this, arguments);
+			});
+		});
+	</script>
+<!--	<script>
 		/*global require*/
 		/*jslint browser:true*/
 		require(["require", "dojo/on", "esri/map", "esri/graphic", "esri/geometry/Extent", "esri/toolbars/draw", "dojo/_base/connect", "dojo/domReady!"
@@ -31,7 +61,7 @@
 			var map, gfxLayer;
 
 			/** Gets the extent from the parent page.
-			@returns {Object}
+			@returns {esri/geometry/Extent}
 			*/
 			function getExtent() {
 				var extent, xminElement, yminElement, xmaxElement, ymaxElement, parentDoc, xmin, ymin, xmax, ymax;
@@ -80,7 +110,7 @@
 			@param {DOMElement} mapRoot The element into which the toolbar div will be placed.
 			*/
 			function createToolbarControls(mapRoot) {
-				var docFrag, draw, toolbar, drawButton, clearButton;
+				var docFrag, draw, toolbar, drawButton, clearButton, closeButton;
 				// Create the draw toolbar.
 				draw = new Draw(map);
 				// Setup the draw-complete event.
@@ -132,8 +162,23 @@
 					gfxLayer.clear();
 					setParentExtent(null);
 				};
+
+				// Add the close button.
+				closeButton = document.createElement("button");
+				closeButton.id = "closeButton";
+				closeButton.type = "button";
+				closeButton.textContent = "Close";
+				mapRoot.appendChild(closeButton);
+
+				closeButton.onclick = function () {
+					window.close();
+				};
 			}
 
+			/** Gets map options determined by whether or not there is an extent provided
+			by the parent window.
+			@returns {Object} Map constructor options.
+			*/
 			function getMapOptions() {
 				var extent, options = {
 					basemap: "streets",
@@ -181,6 +226,6 @@
 				});
 			});
 		});
-	</script>
+	</script>-->
 </body>
 </html>
