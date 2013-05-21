@@ -80,6 +80,7 @@
 				var docFrag, draw, toolbar, drawButton, clearButton;
 
 				draw = new Draw(map);
+				// The Draw toolbar does not yet support dojo/on.  Must use legacy dojo/_base/connect instead.
 				connect.connect(draw, "onDrawComplete", function (event) {
 					if (event.geometry) {
 						gfxLayer.clear();
