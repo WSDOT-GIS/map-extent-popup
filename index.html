@@ -19,9 +19,6 @@
 			mapButton.onclick = function () {
 				var mapWindow;
 				mapWindow = window.open("MapPage.html", "map", "titlebar=no");
-				mapWindow.closed = function () {
-					console.log(this, arguments);
-				}
 			}
 		}());
 	</script>
