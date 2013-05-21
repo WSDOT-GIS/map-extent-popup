@@ -76,10 +76,14 @@
 				}
 			}
 
+			/** Creates the draw toolbar controls for the map.
+			@param {DOMElement} mapRoot The element into which the toolbar div will be placed.
+			*/
 			function createToolbarControls(mapRoot) {
 				var docFrag, draw, toolbar, drawButton, clearButton;
-
+				// Create the draw toolbar.
 				draw = new Draw(map);
+				// Setup the draw-complete event.
 				// The Draw toolbar does not yet support dojo/on.  Must use legacy dojo/_base/connect instead.
 				connect.connect(draw, "onDrawComplete", function (event) {
 					if (event.geometry) {
@@ -92,6 +96,7 @@
 					drawButton.textContent = "Draw";
 				});
 
+				// Create the toolbar div and its buttons...
 				docFrag = document.createDocumentFragment();
 				toolbar = document.createElement("div");
 				toolbar.classList.add("map-toolbar");
@@ -109,8 +114,10 @@
 				clearButton.id = "clearButton";
 				toolbar.appendChild(clearButton);
 
+				// Add the toolbar to the document.
 				mapRoot.appendChild(toolbar);
 
+				// Setup the button click events.
 				drawButton.onclick = function () {
 					if (this.textContent === "Draw") {
 						draw.activate(Draw.EXTENT, null);
@@ -127,12 +134,24 @@
 				};
 			}
 
+			function getMapOptions() {
+				var extent, options = {
+					basemap: "streets",
+					center: [-120.80566406246835, 47.41322033015946],
+					zoom: 7,
+					showAttribution: true
+				};
+				extent = getExtent();
+				if (extent) {
+					delete options.center;
+					delete options.zoom;
+				}
+				return options;
+			}
 
 
-			map = new Map("mapDiv", {
-				basemap: "streets",
-				extent: getExtent()
-			});
+
+			map = new Map("mapDiv", getMapOptions());
 			
 
 			
