@@ -43,10 +43,10 @@
     <Content Include="MapPage.html" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README.md" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
