@@ -2,13 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title></title>
+	<style>
+		body {
+			font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'DejaVu Sans Condensed', sans-serif;
+		}
+		.table {
+			display: table;
+		}
+		.table > div {
+			display: table-row;
+		}
+		.table > div > * {
+			display: table-cell;
+		}
+	</style>
 </head>
 <body>
-	<div>
-		<label for="xmin">xmin</label><input id="xmin" type="number" />
-		<label for="ymin">ymin</label><input id="ymin" type="number" />
-		<label for="xmax">xmax</label><input id="xmax" type="number" />
-		<label for="ymax">xmax</label><input id="ymax" type="number" />
+	<div class="table">
+		<div><label for="xmin">xmin</label><input id="xmin" type="number" /></div>
+		<div><label for="ymin">ymin</label><input id="ymin" type="number" /></div>
+		<div><label for="xmax">xmax</label><input id="xmax" type="number" /></div>
+		<div><label for="ymax">xmax</label><input id="ymax" type="number" /></div>
 	</div>
 	<button type="button" id="showMapButton">Edit in map</button>
 	<script src="../Scripts/index.js"></script>

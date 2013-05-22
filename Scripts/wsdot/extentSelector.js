@@ -6,8 +6,15 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 	"use strict";
 
 	return declare([Evented], {
+		/** @type {esri.Map}
+		*/
 		map: null,
+		/** @type {esri.layers.GraphicsLayer}
+		*/
 		graphicsLayer: null,
+		/** Gets the currently selected extent in the map.
+		@returns {esri.geometry.Extent} The first (and only) extent graphic shown on the map. The spatial reference will match that of the map. Will return null if no graphics are currently in the map.
+		*/
 		getSelectedExtent: function() {
 			var self = this, extent = null;
 			if (self.graphicsLayer) {
@@ -17,12 +24,20 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 			}
 			return extent;
 		},
+		/** Adds an extent graphic to the map, replacing any existing graphics.
+		*/
 		setExtent: function (/*esri.geometry.Extent*/ extent) {
 			if (this.graphicsLayer) {
 				this.graphicsLayer.clear();
 				this.graphicsLayer.add(new Graphic(extent));
 			}
+			return this;
 		},
+		/**
+		* @param {Element|String} The element where the extentSelector will be created, or its id.
+		* @param {Object} options
+		* @param {esri.geometry.Extent} options.initExtent The initial extent the map will be zoomed to.
+		*/
 		constructor: function (mapDiv, options) {
 			var self = this;
 
