@@ -36,10 +36,11 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 			return extent;
 		},
 		/** 
-		Adds an extent graphic to the map, replacing any existing graphics.
-		@instance
+		* Adds an extent graphic to the map, replacing any existing graphics.
+		* @param {esri.geometry.Extent} extent
+		* @instance
 		*/
-		setExtent: function (/*esri.geometry.Extent*/ extent) {
+		setExtent: function (extent) {
 			if (this.graphicsLayer) {
 				this.graphicsLayer.clear();
 				this.graphicsLayer.add(new Graphic(extent));

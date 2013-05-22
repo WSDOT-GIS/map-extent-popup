@@ -1,2 +1,1 @@
-cd jsdoc
-jsdoc ..\..\Scripts\ --recurse --destination ..\..\docs
+jsdoc\jsdoc ..\Scripts ..\README.md --recurse --destination ..\docs
