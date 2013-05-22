@@ -123,6 +123,7 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 					self.map.addLayer(self.graphicsLayer);
 					if (options.initExtent) {
 						self.setExtent(options.initExtent);
+						self.map.setExtent(options.initExtent, true);
 					}
 				});
 			});

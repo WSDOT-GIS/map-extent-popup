@@ -16,10 +16,31 @@
 		(function () {
 			"use strict";
 			var mapButton;
+
+			function getExtent() {
+				var extent = [
+					Number(document.getElementById("xmin").value),
+					Number(document.getElementById("ymin").value),
+					Number(document.getElementById("xmax").value),
+					Number(document.getElementById("ymax").value),
+				];
+
+				if (!(extent[0] && extent[1] && extent[2] && extent[3])) {
+					extent = null;
+				}
+
+				return extent;
+			}
+
 			mapButton = document.getElementById("showMapButton");
 			mapButton.onclick = function () {
-				var mapWindow;
-				mapWindow = window.open("MapPage.html", "map", "titlebar=no,menubar=no,toolbar=no,location=no,dependent=yes,modal=yes,close=no,dialog=yes");
+				var mapWindow, url = "MapPage.html", extent = getExtent();
+
+				if (extent) {
+					url += "#" + extent.join(",");
+				}
+
+				mapWindow = window.open(url, "map", "titlebar=no,menubar=no,toolbar=no,location=no,dependent=yes,modal=yes,close=no,dialog=yes");
 				mapWindow.onbeforeunload = function () {
 					var extent;
 					if (this.extentSelector) {
