@@ -17,7 +17,13 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 			}
 			return extent;
 		},
-		constructor: function () {
+		setExtent: function (/*esri.geometry.Extent*/ extent) {
+			if (this.graphicsLayer) {
+				this.graphicsLayer.clear();
+				this.graphicsLayer.add(new Graphic(extent));
+			}
+		},
+		constructor: function (options) {
 			var self = this;
 
 			/** Creates the draw toolbar controls for the map.
@@ -115,6 +121,9 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 					renderer = new SimpleRenderer(symbol);
 					self.graphicsLayer.setRenderer(renderer);
 					self.map.addLayer(self.graphicsLayer);
+					if (options.initExtent) {
+						self.setExtent(options.initExtent);
+					}
 				});
 			});
 		}

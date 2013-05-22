@@ -25,13 +25,19 @@
 					if (this.extentSelector) {
 						if (this.extentSelector.getSelectedExtent) {
 							extent = this.extentSelector.getSelectedExtent();
-							if (extent) {
-								document.getElementById("xmin").value = extent.xmin;
-								document.getElementById("ymin").value = extent.ymin;
-								document.getElementById("xmax").value = extent.xmax;
-								document.getElementById("ymax").value = extent.ymax;
-							}
+
 						}
+					}
+					if (extent) {
+						document.getElementById("xmin").value = extent.xmin;
+						document.getElementById("ymin").value = extent.ymin;
+						document.getElementById("xmax").value = extent.xmax;
+						document.getElementById("ymax").value = extent.ymax;
+					} else {
+						document.getElementById("xmin").value = null;
+						document.getElementById("ymin").value = null;
+						document.getElementById("xmax").value = null;
+						document.getElementById("ymax").value = null;
 					}
 				};
 			};
