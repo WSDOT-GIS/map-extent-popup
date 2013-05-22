@@ -1,30 +1,60 @@
 ﻿/*global define, require*/
 /*jslint browser:true*/
 
-/** @namespace wsdot */
+/** @file Creates a map from which a user can select an extent.
+*/
+
+/**
+* @external Element
+* @see {@link https://developer.mozilla.org/en-US/docs/Web/API/element Element}
+*/
+
+/**
+ * The built in string object.
+ * @external String
+ * @see {@link https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String String}
+ */
+
+/**
+* The ArcGIS JavaScript API Map object.
+* @external Map
+* @see {@link http://help.arcgis.com/en/webapi/javascript/arcgis/jsapi/map-amd.html  Map}
+*/
+
+/**
+* @external Extent
+* @see {@link http://help.arcgis.com/en/webapi/javascript/arcgis/jsapi/extent-amd.html Extent}
+*/
+
+/**
+* @external GraphicsLayer
+* @see {@link http://help.arcgis.com/en/webapi/javascript/arcgis/jsapi/graphicslayer-amd.html GraphicsLayer}
+*/
+
 define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", "esri/graphic",
 	"esri/toolbars/draw", "dojo/_base/connect", "dojo/domReady!"
-], /** @exports wsdot/extentSelector */ function (require, Evented, declare, on, Map, Graphic, Draw, connect) {
+], /** 
+* @exports wsdot/extentSelector 
+*/
+function (require, Evented, declare, on, Map, Graphic, Draw, connect) {
 	"use strict";
 
-	
-	/** @class */
-	return declare([Evented], /** @lends wsdot.extentSelector */ {
+	return declare([Evented], /** @lends extentSelector */ {
 		
 
 		/** 
 		@instance
-		@type {esri.Map}
+		@type {external:Map} 
 		*/
 		map: null,
 		/** 
-		@type {esri.layers.GraphicsLayer}
+		@type {external:GraphicsLayer}
 		@instance
 		*/
 		graphicsLayer: null,
 		/** Gets the currently selected extent in the map.
 		@instance
-		@returns {esri.geometry.Extent} The first (and only) extent graphic shown on the map. The spatial reference will match that of the map. Will return null if no graphics are currently in the map.
+		@returns {external:Extent} The first (and only) extent graphic shown on the map. The spatial reference will match that of the map. Will return null if no graphics are currently in the map.
 		*/
 		getSelectedExtent: function() {
 			var self = this, extent = null;
@@ -37,8 +67,9 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 		},
 		/** 
 		* Adds an extent graphic to the map, replacing any existing graphics.
-		* @param {esri.geometry.Extent} extent
+		* @param {external:Extent} extent
 		* @instance
+		* @returns {extentSelector} Returns the caller, allowing for chaining.
 		*/
 		setExtent: function (extent) {
 			if (this.graphicsLayer) {
@@ -48,13 +79,22 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 			return this;
 		},
 		/**
-		* @param {Element|String} mapDiv The element where the extentSelector will be created, or its id.
+		* @param {external:Element|external:String} mapDiv The element where the extentSelector will be created, or its id.
 		* @param {Object} options
-		* @param {esri.geometry.Extent} options.initExtent The initial extent the map will be zoomed to.
+		* @param {external:Extent} options.initExtent The initial extent the map will be zoomed to.
 		* @constructs
 		*/
 		constructor: function (mapDiv, options) {
 			var self = this;
+
+			/**
+			 * extent-change event
+			 * @event extentSelector#extent-change
+			 * @type {Event}
+			 * @property {external:Extent} geometry Geometry of the shape that was drawn. Coordinates of this geometry have the same spatial reference of the map. 
+			 * @property {external:Extent} geographicGeometry Geometry of the drawn shape in geographic coordinates (latitude, longitude). Only available when the map's spatial reference is Web Mercator or Geographic (4326). 
+			 * @see {@link http://help.arcgis.com/en/webapi/javascript/arcgis/jsapi/draw-amd.html#ondrawcomplete Draw.onDrawComplete}
+			 */
 
 			/** Creates the draw toolbar controls for the map.
 			@param {DOMElement} mapRoot The element into which the toolbar div will be placed.
