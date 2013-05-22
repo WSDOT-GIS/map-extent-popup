@@ -1,0 +1,24 @@
+﻿html, body, #mapDiv {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+.map-toolbar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding-top: 0.5em;
+	padding-right: 0.5em;
+}
+.map-toolbar button, #closeButton {
+	font-size: 1em;
+	font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'DejaVu Sans Condensed', sans-serif;
+	padding: 1em;
+}
+
+#closeButton {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-bottom: 0.5em;
+}
