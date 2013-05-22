@@ -1,0 +1,12 @@
+﻿body {
+	font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'DejaVu Sans Condensed', sans-serif;
+}
+.table {
+	display: table;
+}
+.table > div {
+	display: table-row;
+}
+.table > div > * {
+	display: table-cell;
+}
