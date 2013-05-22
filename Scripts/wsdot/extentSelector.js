@@ -23,7 +23,7 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 				this.graphicsLayer.add(new Graphic(extent));
 			}
 		},
-		constructor: function (options) {
+		constructor: function (mapDiv, options) {
 			var self = this;
 
 			/** Creates the draw toolbar controls for the map.
@@ -94,7 +94,15 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 				};
 			}
 
-			self.map = new Map("mapDiv", {
+			if (typeof (mapDiv) === "string") {
+				mapDiv = document.getElementById("mapDiv");
+			}
+
+			if (!mapDiv instanceof Element) {
+				throw new TypeError("mapDiv must be either an Element or the id of an Element.");
+			}
+
+			self.map = new Map(mapDiv, {
 				basemap: "streets",
 				center: [-120.80566406246835, 47.41322033015946],
 				zoom: 7,

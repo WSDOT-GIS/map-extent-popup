@@ -1,4 +1,7 @@
-﻿require(["dojo/on", "wsdot/extentSelector", "esri/geometry/Extent"], function (on, ExtentSelector, Extent) {
+﻿/*global require*/
+/*jslint browser:true*/
+require(["dojo/on", "wsdot/extentSelector", "esri/geometry/Extent"], function (on, ExtentSelector, Extent) {
+	"use strict";
 	var extentSelector, extent;
 
 	/** Retrieves the extent from the hash.  The extent should be provided as four numbers separated by commas.
@@ -22,7 +25,7 @@
 
 	extent = getInitialExtent();
 
-	extentSelector = new ExtentSelector({
+	extentSelector = new ExtentSelector("mapDiv", {
 		initExtent: extent
 	});
 	window.extentSelector = extentSelector;
