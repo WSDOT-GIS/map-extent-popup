@@ -1,2 +1,2 @@
 cd jsdoc
-jsdoc ..\..\Scripts\ --recurse --destination ..\..\Scripts\docs
+jsdoc ..\..\Scripts\ --recurse --destination ..\..\docs
