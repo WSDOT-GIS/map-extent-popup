@@ -47,6 +47,7 @@
 	<script>
 		require(["dojo/on", "wsdot/extentSelector"], function (on, ExtentSelector) {
 			var extentSelector = new ExtentSelector();
+			window.extentSelector = extentSelector;
 			on(extentSelector, "extent-change", function () {
 				console.log(this, arguments);
 			});

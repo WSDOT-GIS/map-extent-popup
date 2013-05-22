@@ -8,6 +8,15 @@ define(["require", "dojo/Evented", "dojo/_base/declare", "dojo/on", "esri/map", 
 	return declare([Evented], {
 		map: null,
 		graphicsLayer: null,
+		getSelectedExtent: function() {
+			var self = this, extent = null;
+			if (self.graphicsLayer) {
+				if (self.graphicsLayer.graphics.length) {
+					extent = self.graphicsLayer.graphics[0].geometry;
+				}
+			}
+			return extent;
+		},
 		constructor: function () {
 			var self = this;
 

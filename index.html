@@ -12,6 +12,7 @@
 	</div>
 	<button type="button" id="showMapButton">Edit in map</button>
 	<script>
+		/*jslint browser:true*/
 		(function () {
 			"use strict";
 			var mapButton;
@@ -20,10 +21,20 @@
 				var mapWindow;
 				mapWindow = window.open("MapPage.html", "map", "titlebar=no,menubar=no,toolbar=no,location=no,dependent=yes,modal=yes,close=no,dialog=yes");
 				mapWindow.onbeforeunload = function () {
-					console.log(this);
-					console.log(arguments);
-				}
-			}
+					var extent;
+					if (this.extentSelector) {
+						if (this.extentSelector.getSelectedExtent) {
+							extent = this.extentSelector.getSelectedExtent();
+							if (extent) {
+								document.getElementById("xmin").value = extent.xmin;
+								document.getElementById("ymin").value = extent.ymin;
+								document.getElementById("xmax").value = extent.xmax;
+								document.getElementById("ymax").value = extent.ymax;
+							}
+						}
+					}
+				};
+			};
 		}());
 	</script>
 </body>
