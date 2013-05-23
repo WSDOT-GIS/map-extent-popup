@@ -11,3 +11,5 @@ We needed to put a map control from which a user could select an extent into a l
 
 ## License ##
 Licensed under [The MIT License](http://opensource.org/licenses/MIT). See the LICENSE.txt file for details.
+
+[that caused problems with the map]:https://github.com/WSDOT-GIS/ArcGis-JS-in-ASP.NET-Web-Forms
